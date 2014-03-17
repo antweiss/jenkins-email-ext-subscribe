@@ -1,10 +1,27 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
-         xmlns:l="/lib/layout">
+         xmlns:l="/lib/layout" xmlns:f="/lib/form">
     <l:layout xmlns:plugin="/hudson/plugins/javancss/tags">
     <st:include it="${it.project}" page="sidepanel.jelly"/>
     <l:main-panel>
       <h1>${it.displayName}</h1>
-      
-    </l:main-panel>
+      <h2>${it.userId}</h2>+
+      <h3>${it.recipients}</h3>
+       <form action="" method="post" name="configureSubscriptions" onSubmit="return onSubmit();">
+                <table>
+                    <f:entry title="Success">
+                        <f:checkbox name="success" id="success" clazz="required" />
+                    </f:entry>
+                     <f:entry title="Failure">
+                        <f:checkbox name="failure" id="failure" clazz="required" />
+                    </f:entry>
+                    <f:entry>
+                        <f:submit value="${%Go}!"/>
+                    </f:entry>
+                </table>
+            </form>
+            <div id="rendered_template">
+                                                            
+            </div>
+        </l:main-panel>
   </l:layout>
 </j:jelly>

@@ -19,7 +19,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
  *
  * @author aweiss
  */
-public class SubscribeBuildWrapper extends BuildWrapper {
+public class SubscribeBuildWrapper extends BuildWrapper{
     
     private boolean isSubscriptionAllowed;
     @DataBoundConstructor
