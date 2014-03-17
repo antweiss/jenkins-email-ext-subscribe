@@ -6,22 +6,19 @@
       <h1>${it.displayName}</h1>
       <h2>${it.userId}</h2>+
       <h3>${it.recipients}</h3>
-       <form action="saveSubscription" method="post" name="configureSubscriptions" onSubmit="return onSubmit();">
+       <form action="setRecipients" method="post" name="configureSubscriptions">
                 <table>
                     <f:entry title="Success">
-                        <f:checkbox name="success" id="success" clazz="required" />
+                        <f:checkbox name="success" id="success" clazz="required" checked="${it.hasSuccessSubscription()}"/>
                     </f:entry>
                      <f:entry title="Failure">
-                        <f:checkbox name="failure" id="failure" clazz="required" />
+                        <f:checkbox name="failure" id="failure" clazz="required" checked="${it.hasFailureSubscription()}"/>
                     </f:entry>
                     <f:entry>
                         <f:submit value="${%Submit}!"/>
                     </f:entry>
                 </table>
             </form>
-            <div id="rendered_template">
-                                                            
-            </div>
-        </l:main-panel>
+       </l:main-panel>
   </l:layout>
 </j:jelly>
