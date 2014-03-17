@@ -6,7 +6,7 @@
       <h1>${it.displayName}</h1>
       <h2>${it.userId}</h2>+
       <h3>${it.recipients}</h3>
-       <form action="" method="post" name="configureSubscriptions" onSubmit="return onSubmit();">
+       <form action="saveSubscription" method="post" name="configureSubscriptions" onSubmit="return onSubmit();">
                 <table>
                     <f:entry title="Success">
                         <f:checkbox name="success" id="success" clazz="required" />
@@ -15,7 +15,7 @@
                         <f:checkbox name="failure" id="failure" clazz="required" />
                     </f:entry>
                     <f:entry>
-                        <f:submit value="${%Go}!"/>
+                        <f:submit value="${%Submit}!"/>
                     </f:entry>
                 </table>
             </form>
