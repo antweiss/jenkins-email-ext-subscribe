@@ -30,20 +30,21 @@ import org.kohsuke.stapler.StaplerResponse;
 public class SubscribeAction implements Action {
 
     private final AbstractProject<?, ?> project;
- 
-	public SubscribeAction(final AbstractProject project) {
-		this.project = project;    
-	}
-    
-	/**
-	* Method necessary to get the side-panel included in the Jelly file
-	* @return this {@link AbstractProject}
-	*/
-	public AbstractProject<?, ?> getProject() {
-		return this.project;
-	}
-   
-	public String getIconFileName() {
+
+    public SubscribeAction(final AbstractProject project) {
+        this.project = project;
+    }
+
+    /**
+     * Method necessary to get the side-panel included in the Jelly file
+     *
+     * @return this {@link AbstractProject}
+     */
+    public AbstractProject<?, ?> getProject() {
+        return this.project;
+    }
+
+    public String getIconFileName() {
         return "/plugin/email-ext-subscriber/stock_mail_send.png";
     }
 
@@ -112,17 +113,50 @@ public class SubscribeAction implements Action {
             return (Mailer) emailPublisher;
     }
 
-    public boolean doSetRecipients(StaplerRequest req, StaplerResponse rsp) throws IOException,ServletException {
-        Mailer mailer = getMailer();
+    public void setRecipients(String triggerName, String recipientList) {
+
+        DescribableList<Publisher, Descriptor<Publisher>> publishers = project.getPublishersList();
+        Descriptor<Publisher> descriptor = Hudson.getInstance().getDescriptor(ExtendedEmailPublisher.class);
+        ExtendedEmailPublisher emailPublisher = (ExtendedEmailPublisher) publishers.get(descriptor);
+        List<EmailTrigger> triggers = emailPublisher.getConfiguredTriggers();
+        for (EmailTrigger trigger : triggers) {
+            if (trigger.getDescriptor().getDisplayName().equals(triggerName)) {
+                trigger.getEmail().setRecipientList(recipientList);
+
+            }
+        }
+
+    }
+    
+     public void doSaveSubscription(StaplerRequest req, StaplerResponse rsp) throws IOException,ServletException {
         JSONObject form = req.getSubmittedForm();
-        return true;
+        String[] triggers = {"Success","Failure"};
+        boolean successSubscription = form.getBoolean("Success");
+        boolean failureSubscription = form.getBoolean("Failure");
+        String userId = getUserId();
+        for (String triggerName : triggers)
+        {
+            if ( form.getBoolean(triggerName) )
+            {
+                String recipientList = getExtMailerRecipients(triggerName);
+                if (!StringUtils.contains(recipientList, userId)) 
+                {
+                    recipientList=userId+","+recipientList;
+                }
+                setRecipients(triggerName,recipientList);
+            }
+        }
+        project.save();
+        
+        rsp.sendRedirect(project.getAbsoluteUrl());
+     }
 //        if (!StringUtils.equals(value, mailer.recipients)) {
 //            mailer.recipients = value;
 //            return true;
 //        } else {
 //            return false;
 //        }
-    }
+    
 
     public boolean addMailer() throws IOException {
         Mailer mailer = getMailer();

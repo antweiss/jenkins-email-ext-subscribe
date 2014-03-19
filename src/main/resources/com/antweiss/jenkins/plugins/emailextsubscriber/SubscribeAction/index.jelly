@@ -6,13 +6,13 @@
       <h1>${it.displayName}</h1>
       <h2>${it.userId}</h2>+
       <h3>${it.recipients}</h3>
-       <form action="setRecipients" method="post" name="configureSubscriptions">
+       <form action="saveSubscription" method="post" name="configureSubscriptions">
                 <table>
                     <f:entry title="Success">
-                        <f:checkbox name="success" id="success" clazz="required" checked="${it.hasSuccessSubscription()}"/>
+                        <f:checkbox name="Success" id="Success" clazz="required" checked="${it.hasSuccessSubscription()}"/>
                     </f:entry>
                      <f:entry title="Failure">
-                        <f:checkbox name="failure" id="failure" clazz="required" checked="${it.hasFailureSubscription()}"/>
+                        <f:checkbox name="Failure" id="Failure" clazz="required" checked="${it.hasFailureSubscription()}"/>
                     </f:entry>
                     <f:entry>
                         <f:submit value="${%Submit}!"/>
