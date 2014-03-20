@@ -1,0 +1,41 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+         xmlns:l="/lib/layout" xmlns:f="/lib/form">
+    <l:layout title="ManageSubscriptions" norefresh="true">
+     <l:main-panel>
+     <h1>Subscriptions</h1>
+       <div>
+        <j:set var="Subs" value="${it.getMySubscriptions()}" />
+        <j:choose>
+          <j:when test="${Subs.size() == 0}">
+             No subscriptions found!
+          </j:when>
+          <j:otherwise>
+            <br/>
+            <div>
+             
+                <table class="pane sortable" style="width:100%">
+                  <tr>
+                    <td class="pane-header" initialSortDir="up" align="left">JobURL</td>
+                    <td class="pane-header" align="left">Success</td>
+                    <td class="pane-header" align="left">Failure</td>
+                    <td class="pane-header" align="left">Edit</td>
+                  </tr>
+                  <j:set var="SubsCount" value="0"/>
+                  <j:forEach var="sub" items="${Subs}">
+                    <j:set var="SubsCount" value="${SubsCount + 1}"/>
+                    <tr>
+                      <td>${sub.Url}</td>
+                      <td>${sub.Success}</td>
+                      <td>${sub.Failure}</td>
+                      <td>${SubsCount}</td>
+                    </tr>
+                  </j:forEach>
+                </table>
+            </div>
+            
+          </j:otherwise>
+        </j:choose>
+      </div>
+    </l:main-panel>
+  </l:layout>
+</j:jelly>
