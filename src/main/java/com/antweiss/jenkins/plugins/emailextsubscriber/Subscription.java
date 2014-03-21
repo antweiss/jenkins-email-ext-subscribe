@@ -6,6 +6,8 @@
 
 package com.antweiss.jenkins.plugins.emailextsubscriber;
 
+import jenkins.model.Jenkins;
+
 /**
  *
  * @author aweiss
@@ -13,13 +15,13 @@ package com.antweiss.jenkins.plugins.emailextsubscriber;
 public class Subscription {
     public boolean Success;
     public boolean Failure;
-    public String Url;
+    public String Name;
     public String editUrl;
-    public Subscription(boolean Success,boolean Failure,String Url)
+    public Subscription(boolean Success,boolean Failure,String Name, String Url)
     {
         this.Success = Success;
         this.Failure = Failure;
-        this.Url = Url;
-        this.editUrl = Url+"/Subscribe";
+        this.Name = Name;
+        this.editUrl = Jenkins.getInstance().getRootUrl()+Url+"Subscribe";
     }
 }

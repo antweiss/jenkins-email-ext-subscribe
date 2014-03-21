@@ -30,7 +30,7 @@ import org.kohsuke.stapler.StaplerResponse;
 public class SubscribeAction implements Action {
 
     private final AbstractProject<?, ?> project;
-
+  
     public SubscribeAction(final AbstractProject project) {
         this.project = project;
     }
@@ -45,7 +45,11 @@ public class SubscribeAction implements Action {
     }
 
     public String getIconFileName() {
-        return "/plugin/email-ext-subscriber/stock_mail_send.png";
+        if ("anonymous".equals(getUserId()))
+        {
+            return null;
+        }
+         return "/plugin/email-ext-subscriber/stock_mail_send.png";
     }
 
     public String getDisplayName() {
@@ -163,10 +167,11 @@ public class SubscribeAction implements Action {
             setRecipients(triggerName,recipientList);
         }
         project.save();
-        
-        rsp.sendRedirect(project.getAbsoluteUrl());
+       
+        rsp.sendRedirect(project.getAbsoluteUrl()+"Subscribe");
      }
-
+     
+     
      private Mailer getMailer() {
          DescribableList<Publisher, Descriptor<Publisher>> publishers = project.getPublishersList();
             Descriptor<Publisher> descriptor = Hudson.getInstance().getDescriptor(Mailer.class);

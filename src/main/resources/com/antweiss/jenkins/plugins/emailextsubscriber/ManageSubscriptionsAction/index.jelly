@@ -15,7 +15,7 @@
              
                 <table class="pane sortable" style="width:100%">
                   <tr>
-                    <td class="pane-header" initialSortDir="up" align="left">JobURL</td>
+                    <td class="pane-header" initialSortDir="up" align="left">Job</td>
                     <td class="pane-header" align="left">Success</td>
                     <td class="pane-header" align="left">Failure</td>
                     <td class="pane-header" align="left">Edit</td>
@@ -24,10 +24,14 @@
                   <j:forEach var="sub" items="${Subs}">
                     <j:set var="SubsCount" value="${SubsCount + 1}"/>
                     <tr>
-                      <td>${sub.Url}</td>
-                      <td>${sub.Success}</td>
-                      <td>${sub.Failure}</td>
-                      <td>${SubsCount}</td>
+                      <td>${sub.Name}</td>
+                      <td>
+                          <j:if test="${sub.Success}">YES</j:if>
+                          <j:if test="${!sub.Success}">NO</j:if>
+                      </td>
+                      <td><j:if test="${sub.Failure}">YES</j:if>
+                          <j:if test="${!sub.Failure}">NO</j:if></td>
+                      <td><a href="${sub.editUrl}">Edit</a></td>
                     </tr>
                   </j:forEach>
                 </table>

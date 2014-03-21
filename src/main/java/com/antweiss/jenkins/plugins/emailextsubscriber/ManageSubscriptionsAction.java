@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import org.acegisecurity.context.SecurityContextHolder;
 
 /**
  *
@@ -24,7 +25,11 @@ import java.util.List;
 public class ManageSubscriptionsAction implements RootAction {
 
    public String getIconFileName() {
-        return "/plugin/email-ext-subscriber/stock_mail_send.png";
+       if ("anonymous".equals(SecurityContextHolder.getContext().getAuthentication().getName()))
+        {
+            return null;
+        }
+         return "/plugin/email-ext-subscriber/stock_mail_send.png";
     }
 
     public String getDisplayName() {
@@ -46,8 +51,11 @@ public class ManageSubscriptionsAction implements RootAction {
         for (Iterator<TopLevelItem> it = jobs.iterator(); it.hasNext();) {
            TopLevelItem job = it.next();
            SubscribeAction action = new SubscribeAction((AbstractProject) job);
-           Subscription sub = new Subscription(action.hasSuccessSubscription(),action.hasFailureSubscription(),job.getUrl());
-          subscriptions.add(sub);
+           if (action.hasFailureSubscription() || action.hasSuccessSubscription())
+           {
+                 Subscription sub = new Subscription(action.hasSuccessSubscription(),action.hasFailureSubscription(),job.getDisplayName(),job.getUrl());
+                 subscriptions.add(sub);
+           }
        }
         return subscriptions;
     }
