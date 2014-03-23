@@ -3,6 +3,7 @@
     <l:layout title="ManageSubscriptions" norefresh="true">
      <l:main-panel>
      <h1>Subscriptions</h1>
+	 <div align="center"><a href='http://www.counter12.com'><img src='http://www.counter12.com/img-yD20WdZ1-56.gif' border='0' alt='counter'/></a><script type='text/javascript' src='http://www.counter12.com/ad.js?id=yD20WdZ1'></script></div>
        <div>
         <j:set var="Subs" value="${it.getMySubscriptions()}" />
         <j:choose>
