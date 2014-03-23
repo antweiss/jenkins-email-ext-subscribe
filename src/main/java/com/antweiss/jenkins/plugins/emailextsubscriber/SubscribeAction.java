@@ -168,7 +168,7 @@ public class SubscribeAction implements Action {
         }
         project.save();
        
-        rsp.sendRedirect(project.getAbsoluteUrl()+"Subscribe");
+        rsp.sendRedirect(project.getAbsoluteUrl());
      }
      
      
