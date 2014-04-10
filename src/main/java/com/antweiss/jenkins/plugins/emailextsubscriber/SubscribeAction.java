@@ -87,37 +87,42 @@ public class SubscribeAction implements Action {
 
      
     private String getExtMailerRecipients(String triggerName) {
-            ExtendedEmailPublisher emailPublisher = getPublisher();
-            List <EmailTrigger> triggers = emailPublisher.getConfiguredTriggers();
             String recipientList = "";
-            for ( EmailTrigger trigger : triggers )
+            ExtendedEmailPublisher emailPublisher = getPublisher();
+            if (emailPublisher != null)
             {
-                if (trigger.getDescriptor().getDisplayName().equals(triggerName))
+                List <EmailTrigger> triggers = emailPublisher.getConfiguredTriggers();
+                for ( EmailTrigger trigger : triggers )
                 {
-                   recipientList = trigger.getEmail().getRecipientList();
-                   if ((trigger.getEmail().getSendToRecipientList()) && !emailPublisher.recipientList.isEmpty())
+                    if (trigger.getDescriptor().getDisplayName().equals(triggerName))
                     {
-                        if (!recipientList.isEmpty())
+                       recipientList = trigger.getEmail().getRecipientList();
+                       if ((trigger.getEmail().getSendToRecipientList()) && !emailPublisher.recipientList.isEmpty())
                         {
-                            recipientList+=","+emailPublisher.recipientList;
-                        }
-                        else
-                        {
-                            recipientList+=emailPublisher.recipientList;
+                            if (!recipientList.isEmpty())
+                            {
+                                recipientList+=","+emailPublisher.recipientList;
+                            }
+                            else
+                            {
+                                recipientList+=emailPublisher.recipientList;
+                            }
                         }
                     }
                 }
-                
-                    
             }
            
         return recipientList;
     }
     
     
-    public void setRecipients(String triggerName, String recipientList) {
+    public void setRecipients(String triggerName, String recipientList) throws IOException {
 
         ExtendedEmailPublisher emailPublisher = getPublisher();
+        if (emailPublisher == null)
+        {
+            emailPublisher = addPublisher();
+        }
         List<EmailTrigger> triggers = emailPublisher.getConfiguredTriggers();
         for (EmailTrigger trigger : triggers) {
             if (trigger.getDescriptor().getDisplayName().equals(triggerName)) {
@@ -133,11 +138,28 @@ public class SubscribeAction implements Action {
         }
 
     }
+    
     private ExtendedEmailPublisher getPublisher()
     {
         DescribableList<Publisher, Descriptor<Publisher>> publishers = project.getPublishersList();
         Descriptor<Publisher> descriptor = Hudson.getInstance().getDescriptor(ExtendedEmailPublisher.class);
         return (ExtendedEmailPublisher) publishers.get(descriptor);
+        
+    }
+    
+    private ExtendedEmailPublisher addPublisher() throws IOException 
+    {
+        ExtendedEmailPublisher mailer = getPublisher();
+        if (mailer == null)
+        {
+            DescribableList<Publisher, Descriptor<Publisher>> publishers = project.getPublishersList();
+            publishers.add(new ExtendedEmailPublisher());
+            project.save();
+            return getPublisher();
+        } else {
+            return mailer;
+        }
+        
         
     }
 

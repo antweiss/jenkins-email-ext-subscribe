@@ -1,0 +1,31 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+         xmlns:l="/lib/layout" xmlns:f="/lib/form" xmlns:t="/lib/hudson">
+<table style="margin-top: 1em; margin-left:1em;">
+   <t:summary icon="${from.iconFileName}">       
+      Recieving mails on job success:
+         <j:choose>
+    <j:when test="${from.hasSuccessSubscription()}">
+    Yes
+        </j:when>
+        <j:otherwise>
+            No
+        </j:otherwise>
+         </j:choose>
+       
+       
+      
+        
+         <br></br>    Recieving mails on job failure:
+              <j:choose>
+    <j:when test="${from.hasFailureSubscription()}">
+    Yes
+        </j:when>
+        <j:otherwise>
+            No
+        </j:otherwise>
+       </j:choose> 
+       </t:summary>
+  
+    </table>
+    
+</j:jelly>
